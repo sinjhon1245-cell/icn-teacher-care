@@ -11,7 +11,8 @@ const App = {
     filters: {},
     formModal: null,
     orgCat: '전체',
-    checks: {}
+    checks: {},
+    moreOpen: false
   },
 
   init() {
@@ -25,8 +26,12 @@ const App = {
   },
 
   nav(p) {
-    this.setState({ page: p });
+    this.setState({ page: p, moreOpen: false });
     window.scrollTo(0, 0);
+  },
+
+  toggleMore() {
+    this.setState({ moreOpen: !this.state.moreOpen });
   },
 
   toggleCheck(key) {
@@ -93,9 +98,12 @@ const App = {
       ${S.page === 'about' ? this.renderAbout() : ''}
       ${this.renderFaq()}
       ${this.renderFooter()}
+      ${this.renderBottomNav()}
       ${S.formModal !== null ? this.renderFormModal() : ''}
+      ${S.moreOpen ? this.renderMoreSheet() : ''}
       <div id="toast" class="toast"></div>
     `;
+    document.body.style.overflow = (S.formModal !== null || S.moreOpen) ? 'hidden' : '';
   },
 
   renderHeader() {
@@ -107,12 +115,13 @@ const App = {
       <header class="site-header">
         <div class="header-inner">
           <div class="brand-badge">곁</div>
-          <div>
+          <div class="brand-text">
             <div class="brand-name">인천 선생님 곁에</div>
             <div class="brand-sub">인천 교육활동 보호·대응 가이드</div>
           </div>
           <nav class="main-nav" aria-label="주요 메뉴">${navHtml}</nav>
-          <a href="tel:0321395" class="header-call">☎ 032-1395</a>
+          <a href="tel:0321395" class="header-call"><span aria-hidden="true">☎</span><span class="header-call-num"> 032-1395</span></a>
+          <button class="mobile-menu-btn" onclick="App.toggleMore()" aria-label="전체 메뉴 열기">☰</button>
         </div>
       </header>
     `;
@@ -194,7 +203,7 @@ const App = {
               <div><div class="detail-label-lav">신청 가능한 지원</div><div class="detail-text">${detail.supports}</div></div>
               <div><div class="detail-label-muted">다음 절차</div><div class="detail-text">${detail.next}</div></div>
             </div>
-            <div style="display:flex;gap:10px;margin-top:22px;flex-wrap:wrap">
+            <div class="btn-row" style="margin-top:22px">
               <a href="tel:0321395" class="btn btn-accent">☎ 긴급 연락 032-1395</a>
               <button class="btn btn-ghost" onclick="App.nav('proc')">관련 대응 절차 보기 →</button>
             </div>
@@ -371,7 +380,7 @@ const App = {
     return `
       <section class="section">
         <div class="eyebrow"><span class="eyebrow-dot"></span>대응 절차</div>
-        <h1 style="font-size:36px">교육활동 침해 사안 처리 4단계</h1>
+        <h1 class="page-title">교육활동 침해 사안 처리 4단계</h1>
         <p class="section-sub">체크한 내용은 이 기기 안에서만 임시 저장돼요.</p>
         <div class="urgent-box">범죄행위가 의심되거나 긴급한 위험이 있다면 절차 확인보다 안전 확보와 경찰 신고(112)가 우선이에요.</div>
         <div class="step-tabs-grid">${tabs}</div>
@@ -439,7 +448,7 @@ const App = {
     return `
       <section class="section">
         <div class="eyebrow"><span class="eyebrow-dot"></span>상황별 가이드</div>
-        <h1 style="font-size:36px">상황에 맞는 대응 방법 찾기</h1>
+        <h1 class="page-title">상황에 맞는 대응 방법 찾기</h1>
         <div class="urgent-box">현재 폭행, 협박, 난입 등으로 신변의 위험이 지속되는 경우에는 행정 절차보다 현장 이탈과 안전 확보, 관리자 보고, 경찰 신고가 우선입니다.</div>
         <div class="card filter-card">
           ${groupsHtml}
@@ -471,7 +480,7 @@ const App = {
     return `
       <section class="section">
         <div class="eyebrow"><span class="eyebrow-dot"></span>서식·체크리스트</div>
-        <h1 style="font-size:36px">바로 쓰는 기록지와 체크리스트</h1>
+        <h1 class="page-title">바로 쓰는 기록지와 체크리스트</h1>
         <div class="urgent-box">공식 서식은 제출 전 소속 학교·교육지원청의 최신 서식인지 반드시 확인하세요. 민감한 개인정보는 공개된 공간에 입력하지 마세요.</div>
         <div class="grid-auto-300">${cards}</div>
       </section>
@@ -515,7 +524,7 @@ const App = {
           <div><strong>신청 방법</strong> · ${p.apply}</div>
           <div><strong>준비 자료</strong> · ${p.docs}</div>
           <div><strong>처리 기한</strong> · ${p.deadline}</div>
-          <div><strong>연락처</strong> · ${p.contact}</div>
+          <div><strong>연락처</strong> · ${linkifyPhone(p.contact)}</div>
         </div>
         <div class="program-updated">최종 확인 ${LAST_CONFIRMED}</div>
       </div>
@@ -523,7 +532,7 @@ const App = {
     return `
       <section class="section">
         <div class="eyebrow"><span class="eyebrow-dot"></span>인천 지원제도</div>
-        <h1 style="font-size:36px">신청할 수 있는 지원, 한눈에</h1>
+        <h1 class="page-title">신청할 수 있는 지원, 한눈에</h1>
         <p class="section-sub">「2026년 인천 교육활동 보호 시행계획」 기준. 시행 상태와 최종 확인 날짜를 함께 확인하세요.</p>
         <div class="grid-auto-320">${cards}</div>
       </section>
@@ -544,7 +553,7 @@ const App = {
         <div class="org-facts">
           <div><strong>담당 지역</strong> · ${o.region}</div>
           <div><strong>지원 내용</strong> · ${o.role}</div>
-          <div><strong>연락처</strong> · ${o.contact}</div>
+          <div><strong>연락처</strong> · ${linkifyPhone(o.contact)}</div>
           <div><strong>운영 시간</strong> · ${o.hours}</div>
         </div>
       </div>
@@ -552,7 +561,7 @@ const App = {
     return `
       <section class="section">
         <div class="eyebrow"><span class="eyebrow-dot"></span>지원기관</div>
-        <h1 style="font-size:36px">인천 교원이 도움을 요청할 수 있는 곳</h1>
+        <h1 class="page-title">인천 교원이 도움을 요청할 수 있는 곳</h1>
         <div class="org-cats-row">${cats}</div>
         <div class="grid-auto-300">${cards}</div>
       </section>
@@ -564,7 +573,7 @@ const App = {
     return `
       <section class="faq-section">
         <div class="eyebrow"><span class="eyebrow-dot"></span>소개</div>
-        <h1 style="font-size:34px">인천 선생님 곁에</h1>
+        <h1 class="page-title">인천 선생님 곁에</h1>
         <p class="about-p">‘인천 선생님 곁에’는 인천 지역 교원이 교육활동 침해, 아동학대 신고, 학교민원, 특이민원 등의 어려움을 겪었을 때 현재 상황을 판단하고, 인천광역시교육청의 지원 절차와 필요한 행동을 단계별로 확인할 수 있도록 돕는 안내 플랫폼이에요.</p>
         <p class="about-p">사이트의 정보와 절차는 「2026년 인천 교육활동 보호 시행계획」을 기준으로 구성했으며, ‘교권침해’라는 표현과 공식 용어인 ‘교육활동 침해’를 함께 사용하되 주요 메뉴와 절차에서는 공식 용어를 우선 사용해요.</p>
         <div class="card about-note">개인정보 보호를 위해 체크리스트와 기록 내용을 서버에 저장하지 않아요. 체크 상태는 사용자의 기기 안에서만 임시 저장돼요.</div>
@@ -610,11 +619,56 @@ const App = {
         </div>
       </footer>
     `;
+  },
+
+  // ══════════════ 모바일 하단 내비게이션 ══════════════
+  renderBottomNav() {
+    const S = this.state;
+    const isMoreTab = ['forms', 'support', 'about'].includes(S.page);
+    const tab = (page, icon, label, active, action) => `
+      <button class="bn-btn ${active ? 'active' : ''}" onclick="${action}">
+        <span class="bn-icon" aria-hidden="true">${icon}</span><span class="bn-label">${label}</span>
+      </button>
+    `;
+    return `
+      <nav class="bottom-nav" aria-label="하단 메뉴">
+        ${tab('home', '🏠', '홈', S.page === 'home', "App.nav('home')")}
+        ${tab('proc', '📋', '대응절차', S.page === 'proc', "App.nav('proc')")}
+        ${tab('guide', '🧭', '상황가이드', S.page === 'guide', "App.nav('guide')")}
+        ${tab('orgs', '🏢', '지원기관', S.page === 'orgs', "App.nav('orgs')")}
+        ${tab('more', '☰', '전체', isMoreTab || S.moreOpen, 'App.toggleMore()')}
+      </nav>
+    `;
+  },
+
+  renderMoreSheet() {
+    return `
+      <div class="modal-overlay sheet-overlay" onclick="App.setState({moreOpen:false})">
+        <div class="sheet-box" onclick="event.stopPropagation()">
+          <div class="modal-head">
+            <h3 class="h2" style="margin:0">전체 메뉴</h3>
+            <button class="modal-close" onclick="App.setState({moreOpen:false})">✕</button>
+          </div>
+          <div class="sheet-menu">
+            <button class="sheet-item" onclick="App.nav('forms')"><span aria-hidden="true">🗂️</span> 서식·체크리스트</button>
+            <button class="sheet-item" onclick="App.nav('support')"><span aria-hidden="true">🤝</span> 지원제도</button>
+            <button class="sheet-item" onclick="App.nav('about')"><span aria-hidden="true">ℹ️</span> 소개</button>
+          </div>
+        </div>
+      </div>
+    `;
   }
 };
 
 function esc(str) {
   return String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function linkifyPhone(text) {
+  return String(text).replace(/(\d{2,4}-\d{3,4}(?:\(\d번\))?|\b112\b)/g, m => {
+    const tel = m.replace(/\(.*?\)/, '').replace(/-/g, '');
+    return '<a href="tel:' + tel + '" class="tel-link">' + m + '</a>';
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => App.init());

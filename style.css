@@ -10,12 +10,16 @@
 
 * { box-sizing: border-box; }
 
+html, body { overflow-x: hidden; }
+
 body {
   margin: 0;
   font-family: "Gowun Dodum", "Pretendard Variable", Pretendard, sans-serif;
   color: var(--text);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 a { color: var(--dark); }
@@ -24,8 +28,6 @@ a:hover { color: var(--accent-dark); }
 button { font-family: inherit; }
 
 @keyframes marq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-.page { background: var(--bg); min-height: 100vh; }
 
 /* ── 헤더 ── */
 .site-header {
@@ -49,6 +51,7 @@ button { font-family: inherit; }
   display: flex; align-items: center; justify-content: center;
   font-weight: 700; font-size: 18px; flex: none;
 }
+.brand-text { flex: 1; min-width: 0; }
 .brand-name { font-weight: 700; font-size: 17px; }
 .brand-sub { font-size: 11px; color: var(--text-faint); }
 .main-nav { margin-left: auto; display: flex; gap: 2px; flex-wrap: wrap; justify-content: flex-end; }
@@ -61,6 +64,12 @@ button { font-family: inherit; }
 .header-call {
   margin-left: 8px; text-decoration: none; background: var(--accent); color: #fff;
   font-weight: 700; font-size: 13.5px; padding: 10px 18px; border-radius: 999px; white-space: nowrap;
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+}
+.mobile-menu-btn {
+  display: none; flex: none; background: #fff; border: 2px solid #DDE7E2; border-radius: 12px;
+  width: 44px; height: 44px; font-size: 18px; cursor: pointer; color: var(--text);
+  align-items: center; justify-content: center;
 }
 
 /* ── 공통 섹션 ── */
@@ -75,6 +84,7 @@ button { font-family: inherit; }
 h1, h2 { font-family: "Gowun Dodum", "Pretendard Variable", Pretendard, sans-serif; letter-spacing: -.01em; margin: 0 0 8px; font-weight: 700; }
 .h2 { font-size: 28px; }
 .h2.center { text-align: center; margin: 0; }
+.page-title { font-size: 36px; }
 .section-sub { color: var(--text-muted); font-size: 14.5px; margin: 0 0 24px; line-height: 1.65; max-width: 640px; }
 
 /* ── 버튼 ── */
@@ -97,7 +107,7 @@ h1, h2 { font-family: "Gowun Dodum", "Pretendard Variable", Pretendard, sans-ser
 .hero h1 { font-size: 40px; line-height: 1.42; margin: 0 0 16px; text-wrap: pretty; }
 .hero .highlight { background: linear-gradient(transparent 62%, var(--soft) 62%); }
 .hero-sub { font-size: 15.5px; line-height: 1.75; color: var(--text-muted); margin: 0 0 24px; max-width: 500px; text-wrap: pretty; }
-.hero-btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.hero-btn-row, .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
 .hero-art { position: relative; min-height: 340px; }
 .hero-blob { position: absolute; inset: 0; background: var(--soft); border-radius: 30px 30px 30px 90px; }
 .hero-card {
@@ -177,6 +187,7 @@ h1, h2 { font-family: "Gowun Dodum", "Pretendard Variable", Pretendard, sans-ser
 .cta-title { font-size: 27px; font-weight: 700; line-height: 1.4; margin-bottom: 10px; }
 .cta-sub { font-size: 14px; line-height: 1.7; color: var(--text-muted); }
 .cta-row { display: flex; gap: 12px; align-items: center; background: var(--bg); border-radius: 14px; padding: 12px 16px; }
+.cta-row > span:last-child { flex: 1; min-width: 0; }
 .cta-num { flex: none; width: 28px; height: 28px; border-radius: 999px; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 .cta-num.n1 { background: var(--lav); }
 .cta-num.n2 { background: var(--accent); }
@@ -191,7 +202,7 @@ h1, h2 { font-family: "Gowun Dodum", "Pretendard Variable", Pretendard, sans-ser
 
 /* ── 보호조치 / 지원카드 ── */
 .protect-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.protect-title { font-weight: 700; font-size: 15.5px; }
+.protect-title { font-weight: 700; font-size: 15.5px; flex: 1; min-width: 0; }
 .protect-desc { font-size: 13.5px; line-height: 1.65; color: var(--text-muted); }
 .support-card { border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
 .support-card.s0 { background: var(--soft); color: var(--deep); }
@@ -213,7 +224,8 @@ h1, h2 { font-family: "Gowun Dodum", "Pretendard Variable", Pretendard, sans-ser
 /* ── FAQ ── */
 .faq-item { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); }
 .faq-btn { width: 100%; text-align: left; background: none; border: none; font: inherit; font-weight: 700; font-size: 15px; padding: 18px 22px; cursor: pointer; display: flex; justify-content: space-between; gap: 12px; color: var(--text); }
-.faq-mark { color: var(--accent-dark); font-size: 18px; }
+.faq-btn > span:first-child { flex: 1; min-width: 0; }
+.faq-mark { color: var(--accent-dark); font-size: 18px; flex: none; }
 .faq-answer { padding: 0 22px 18px; font-size: 14px; line-height: 1.75; color: var(--text-muted); }
 
 /* ── 푸터 ── */
@@ -242,7 +254,8 @@ h1, h2 { font-family: "Gowun Dodum", "Pretendard Variable", Pretendard, sans-ser
 .check-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; border-radius: 14px; cursor: pointer; border: 2px solid #EDE7DC; background: #fff; }
 .check-item.done { border-color: var(--main); background: var(--soft); color: var(--text-muted); text-decoration: line-through; }
 .check-item input { width: 18px; height: 18px; flex: none; margin-top: 2px; }
-.check-item span.label { font-size: 14.5px; line-height: 1.55; }
+.check-item span.label { font-size: 14.5px; line-height: 1.55; flex: 1; min-width: 0; }
+.tel-link { white-space: nowrap; }
 .info-box { background: #F7F9F8; border-radius: 14px; padding: 18px; }
 .info-box-title { font-size: 12.5px; font-weight: 700; color: #5C6B66; margin-bottom: 10px; }
 .info-box-line { font-size: 13.5px; line-height: 1.6; margin-bottom: 6px; }
@@ -273,7 +286,8 @@ h1, h2 { font-family: "Gowun Dodum", "Pretendard Variable", Pretendard, sans-ser
 .modal-overlay { position: fixed; inset: 0; background: rgba(51, 65, 60, .45); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; }
 .modal-box { background: #fff; border-radius: 24px; max-width: 600px; width: 100%; max-height: 82vh; overflow: auto; padding: 32px; }
 .modal-head { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
-.modal-close { background: #F1EDE3; border: none; width: 32px; height: 32px; border-radius: 999px; cursor: pointer; }
+.modal-head h3 { flex: 1; min-width: 0; }
+.modal-close { background: #F1EDE3; border: none; width: 32px; height: 32px; border-radius: 999px; cursor: pointer; flex: none; }
 .modal-body { white-space: pre-wrap; font-family: inherit; font-size: 14px; line-height: 1.75; background: #F7F9F8; border-radius: 14px; padding: 20px; margin: 16px 0; }
 .modal-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
@@ -299,10 +313,141 @@ h1, h2 { font-family: "Gowun Dodum", "Pretendard Variable", Pretendard, sans-ser
 }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-@media (max-width: 760px) {
-  .hero { grid-template-columns: 1fr; padding: 40px 20px 32px; }
-  .hero-art { min-height: 260px; }
-  .section, .section-alt-inner, .faq-section { padding-left: 20px; padding-right: 20px; }
-  .cta-band { padding: 28px; }
-  .cta-phone { font-size: 40px; }
+/* ── 모바일 하단 내비게이션 / 전체 메뉴 시트 (데스크톱 기본 숨김) ── */
+.bottom-nav { display: none; }
+.sheet-overlay { align-items: flex-end; }
+.sheet-box {
+  background: #fff; width: 100%; max-width: 600px; border-radius: 24px 24px 0 0;
+  max-height: 75vh; overflow: auto; padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
 }
+.sheet-menu { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.sheet-item {
+  display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+  background: #F7F9F8; border: none; border-radius: 14px; padding: 16px 18px;
+  font: inherit; font-weight: 700; font-size: 15px; color: var(--text); cursor: pointer; min-height: 44px;
+}
+.sheet-item:active { background: var(--soft); }
+
+/* ══════════════════════════════════════════════
+   모바일 반응형 (360px~430px 대 스마트폰 세로 화면 기준)
+   ══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* 1. 전체 레이아웃 */
+  .section, .section-alt-inner { padding: 32px 16px 28px; }
+  .faq-section { padding: 32px 16px 52px; }
+  .grid-auto, .grid-auto-200, .grid-auto-230, .grid-auto-250, .grid-auto-300, .grid-auto-320, .grid-auto-330 {
+    grid-template-columns: 1fr;
+  }
+  .region-card { grid-template-columns: 1fr; }
+  .card, .quick-detail, .region-card, .support-card, .step-tl-card {
+    padding: 18px;
+  }
+
+  /* 2. 글자 위계 (제목 24~28 / 섹션제목 20~22 / 카드제목 16~18 / 본문 15~16 / 보조문구 13~14) */
+  body { font-size: 15.5px; }
+  .hero h1 { font-size: 27px; line-height: 1.38; }
+  .page-title { font-size: 25px; line-height: 1.35; }
+  .h2 { font-size: 21px; line-height: 1.35; }
+  .cta-title { font-size: 21px; }
+  .cta-phone { font-size: 34px; }
+  .section-sub { font-size: 15.5px; }
+  .protect-title { font-size: 16px; }
+
+  .detail-text, .situ-ex, .situ-facts, .info-box-line, .program-sum, .org-facts,
+  .about-p, .faq-answer, .step-tl-sum, .support-desc, .protect-desc, .form-desc,
+  .check-item .label, .cta-sub, .proc-sum {
+    font-size: 15.5px; line-height: 1.65;
+  }
+  .about-p, .faq-answer, .footer-p { line-height: 1.7; }
+
+  /* 보조 문구(라벨·타임스탬프 류)는 13px 하한 확보 */
+  .detail-label-accent, .detail-label-main, .detail-label-lav, .detail-label-muted,
+  .info-box-title, .filter-group-name, .program-updated, .cta-note, .footer-fine,
+  .proc-check-count {
+    font-size: 13px;
+  }
+
+  /* 한글 줄바꿈: 어색한 어절 분리·고아 낱말 최소화 (지원 브라우저에서만 적용, 미지원 시 기본 줄바꿈으로 자연 폴백) */
+  .page-title, .h2, .cta-title, .situ-title, .org-title, .program-title, .form-title,
+  .step-tl-title, .protect-title, .support-title, .step-tab-title,
+  .faq-btn > span:first-child, .proc-head h2 {
+    text-wrap: balance;
+    line-height: 1.4;
+  }
+  .detail-text, .situ-ex, .situ-facts, .info-box-line, .program-sum, .org-facts,
+  .about-p, .faq-answer, .step-tl-sum, .support-desc, .protect-desc, .form-desc,
+  .check-item .label, .cta-sub, .proc-sum, .section-sub {
+    text-wrap: pretty;
+  }
+  /* 연속 숫자(전화번호·날짜)류만 선택적으로 anywhere 허용 */
+  .tel-link, .cta-phone, .footer-fine, .program-updated {
+    overflow-wrap: anywhere;
+  }
+
+  /* 3. 버튼과 조작 영역 */
+  .btn, .nav-btn, .pill-btn, .quick-btn, .step-tab, .faq-btn, .bn-btn {
+    min-height: 44px;
+  }
+  .pill-btn-sm { padding: 10px 16px; min-height: 40px; display: inline-flex; align-items: center; }
+  .filter-reset, .situ-goto { padding: 8px 0; }
+  .modal-close { width: 44px; height: 44px; }
+  .hero-btn-row, .btn-row {
+    flex-direction: column; align-items: stretch;
+  }
+  .hero-btn-row .btn, .btn-row .btn {
+    width: 100%; justify-content: center; text-align: center;
+  }
+
+  /* 4. 모바일 헤더 (곁 심벌 + 브랜드명 + 전체 메뉴 버튼만, 56~64px) */
+  .header-inner { padding: 8px 16px; gap: 10px; }
+  .brand-sub { display: none; }
+  .main-nav { display: none; }
+  .header-call { display: none; }
+  .mobile-menu-btn { display: flex; }
+  body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+  .bottom-nav {
+    display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+    background: #fff; border-top: 1px solid #EDE7DC;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, .06);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .bn-btn {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px; padding: 6px 4px; background: none; border: none; font: inherit;
+    color: var(--text-faint); cursor: pointer;
+  }
+  .bn-btn.active { color: var(--dark); }
+  .bn-icon { font-size: 20px; line-height: 1; }
+  .bn-label { font-size: 10.5px; font-weight: 700; }
+  .toast { bottom: calc(76px + env(safe-area-inset-bottom)); }
+
+  /* 5. 홈 화면: 반복 장식 요소(일러스트 카드) 숨김 → 핵심 콘텐츠 노출 앞당김 */
+  .hero { grid-template-columns: 1fr; padding: 24px 16px 20px; gap: 20px; }
+  .hero-art { display: none; }
+  .hero-sub { max-width: none; }
+  .hero-chip { margin-bottom: 14px; }
+
+  /* 6. 대응 절차 */
+  .step-tabs-grid {
+    display: flex; overflow-x: auto; gap: 10px; margin: 0 -16px 24px; padding: 0 16px 6px;
+    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+  }
+  .step-tab { flex: 0 0 78%; scroll-snap-align: start; }
+  .proc-card { padding: 18px; }
+
+  /* 7. 상황별 가이드 */
+  .filter-group-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .filter-group-name { width: auto; }
+
+  /* 8. 서식·체크리스트 */
+  .form-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .form-actions .btn { width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 8px; }
+
+  /* 11. 모달 */
+  .modal-overlay { padding: 12px; align-items: flex-end; }
+  .modal-box { padding: 20px; border-radius: 20px 20px 0 0; max-height: 88vh; }
+
+  /* CTA 밴드 */
+  .cta-band { padding: 24px 20px; gap: 20px; }
+}
+
